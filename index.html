@@ -1,0 +1,243 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap-image-gallery.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<style>
+    #videoDiv {
+        alignment: center;
+        align-content: center;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top ">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="index.html">Tint Test</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="input-group" style="width:500px;float:left;padding-top:10px;">
+                <div class="input-group-btn">
+                </div>
+                <input id="searchterm" type="text" class="form-control" placeholder="Search for your video">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span> </span>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="page-scroll" href="#">Home</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#">destinations</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#">Articles</a>
+                </li>
+                <li>
+                    <a id="galleryLabel" class="page-scroll" href="#" style="color:blue;">Gallery</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#">myBlog</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#" data-toggle="modal" data-target=".bs-modal-sm">Login</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<div>
+
+    <div class="container">
+        <form class="form-inline" style="display:none;">
+            <div class="form-group">
+                <button id="video-gallery-button" type="button" class="btn btn-success btn-lg">
+                    <i class="glyphicon glyphicon-film"></i>
+                    Launch Video Gallery
+                </button>
+            </div>
+            <div class="form-group">
+                <button id="image-gallery-button" type="button" class="btn btn-primary btn-lg">
+                    <i class="glyphicon glyphicon-picture"></i>
+                    Launch Image Gallery
+                </button>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success btn-lg active">
+                    <i class="glyphicon glyphicon-leaf"></i>
+                    <input id="borderless-checkbox" type="checkbox"> Borderless
+                </label>
+                <label class="btn btn-primary btn-lg">
+                    <i class="glyphicon glyphicon-fullscreen"></i>
+                    <input id="fullscreen-checkbox" type="checkbox"> Fullscreen
+                </label>
+            </div>
+        </form>
+
+        <br>
+        <div id="videoDiv"></div>
+        <br>
+        <!-- The container for the list of example images -->
+        <div id="links" style="display:none;">
+
+        </div>
+        <div id="links2">
+
+        </div>
+    </div>
+
+    <div id="results"></div>
+    <div id="videoThumbnails"></div>
+    <script>
+        /*
+        $("#searchterm").keyup(function(e){
+            var firstVideoId = "";
+            var q = $("#searchterm").val();
+            $.getJSON("https://www.googleapis.com/youtube/v3/search?",
+                    {
+                        q: q,
+                        part: "snippet",
+                        type: "video",
+                        videoCaption: "any",
+                        maxResults: 50,
+                        key: "AIzaSyBtU6TDhGEQsy17EcfKEApfN0IkJtU-y6w"
+                    }, function(data) {
+                        $("#results").empty();
+                        $("#videoThumbnails").empty()
+                        $("#results").append("<p>Results for <b>" + q + "</b></p>");
+                        $.each(data.items , function(index, element) {
+                            if (index == 0) {
+                                firstVideoId = element.id.videoId;
+                                //console.log(firstVideoId);
+                                $("#videoDiv").empty();
+                                $("#videoDiv").append("<iframe width='560' height='315' src='https://www.youtube.com/embed/" + encodeURIComponent(element.id.videoId) + "' frameborder='0' allowfullscreen></iframe>");
+                            } else {
+                                $("#videoThumbnails").append("<div><img src='" + element.snippet.thumbnails.default.url + "' /></div>");
+                            }
+                            $("#results").append($('<div>', {
+                                text: index + " " + element.id.videoId
+                            }));
+                        });
+                    });
+
+
+        });
+        */
+        $("#searchterm").keyup(function(e){
+            var firstVideoId = "";
+            var q = $("#searchterm").val();
+            $.getJSON("https://www.googleapis.com/youtube/v3/search?",
+                    {
+                        q: q,
+                        part: "snippet",
+                        type: "video",
+                        videoCaption: "any",
+                        maxResults: 50,
+                        key: "AIzaSyBtU6TDhGEQsy17EcfKEApfN0IkJtU-y6w"
+                    }, function(data) {
+                        var linksContainer = $('#links2');
+                        $("#results").empty();
+                        $(linksContainer).empty();
+                        $("#videoThumbnails").empty()
+                        //$("#results").append("<p>Results for <b>" + q + "</b></p>");
+                        $.each(data.items , function(index, element) {
+                           // $("#videoThumbnails").append("<div><img src='" + element.snippet.thumbnails.default.url + "' /></div>");
+                            if (index == 0) {
+                                firstVideoId = element.id.videoId;
+                                //console.log(firstVideoId);
+                                $("#videoDiv").empty();
+                                $("#videoDiv").append("<iframe width='560' height='315' src='https://www.youtube.com/embed/" + encodeURIComponent(element.id.videoId) + "' frameborder='0' allowfullscreen></iframe>");
+                            } else {
+                                $('<a/>')
+                                        .append($('<img class="links2class" src=' + element.snippet.thumbnails.default.url + '>'))
+                                        .prop('href', '#')
+                                        .prop('title', element.snippet.title)
+                                        .attr('data-gallery', '')
+                                        .appendTo(linksContainer);
+                            }
+                        });
+                    });
+        });
+
+        $("img.links2class").click( function (event) {
+            //event.preventDefault();
+            alert("abcd");
+            $("body").css("display", "none");
+        });
+
+        $("#galleryLabel").click(function(event) {
+            var display = $("#links").css("display");
+            console.log(display);
+            if (display == "block") {
+                $("#links").css("display", "none");
+
+            } else {
+                $("#links").css("display", "block");
+
+            }
+        })
+
+    </script>
+</div>
+
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<script src="js/demo.js"></script>
+
+</body>
+</html>
